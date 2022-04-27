@@ -16,7 +16,7 @@
 
   <h3>enter your task</h3>
   <form method="POST" action="/tasks">
-    <input type="text" name="task">
+    <input type="text" name="description">
     <button type="submit">submit</button>
   </form>
 

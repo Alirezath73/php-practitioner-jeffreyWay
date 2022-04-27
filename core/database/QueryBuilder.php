@@ -18,4 +18,24 @@ class QueryBuilder
 
         return $tasks;
     }
+
+    public function insert($table, $parameters)
+    {
+        $query = sprintf(
+            "insert into %s (%s) values (%s)",
+            $table,
+            implode(',', array_keys($parameters)),
+            ':'.implode(',:', array_keys($parameters)),
+        );
+        
+        try {
+            $statement = $this->connection->prepare($query);
+            $statement->execute($parameters);
+            $this->connection = null;
+        } catch (PDOException $e) {
+            die("there is an error occured while trying to insert");
+        }
+
+        return header('Location: http://localhost:8888/');
+    }
 }
