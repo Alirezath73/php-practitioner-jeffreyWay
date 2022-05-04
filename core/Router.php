@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Core;
+
+use App\Controllers\PageController;
+use App\Helpers\Helpers;
+use Exception;
+
 class Router
 {
     public $routes=[
@@ -29,9 +35,20 @@ class Router
     public function direct($uri, $method)
     {
         if (array_key_exists($uri, $this->routes[$method])) {
-            return $this->routes[$method][$uri];
+            return $this->callAction(...explode('@', $this->routes[$method][$uri]));
         }
 
-        throw new Exception('route does not exist!');
+        throw new \Exception('route does not exist!');
+    }
+
+    public function callAction($controller, $action)
+    {
+        $controller = "App\\Controllers\\{$controller}";
+        
+        if (! method_exists($controller, $action)) {
+            throw new Exception("in {$controller} method {$action} doesn't exists");
+        }
+        
+        return (new $controller)->$action();
     }
 }

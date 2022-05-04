@@ -1,10 +1,12 @@
 <?php
 
+namespace App\Core\Database;
+
 class QueryBuilder
 {
     protected $connection;
 
-    public function __construct(PDO $connection)
+    public function __construct(\PDO $connection)
     {
         $this->connection = $connection;
     }
@@ -13,7 +15,7 @@ class QueryBuilder
     {
         $statement = $this->connection->prepare("select * from {$table}");
         $statement->execute();
-        $tasks = $statement->fetchAll(PDO::FETCH_CLASS);
+        $tasks = $statement->fetchAll(\PDO::FETCH_CLASS);
         $this->connection = null;
 
         return $tasks;
@@ -32,10 +34,8 @@ class QueryBuilder
             $statement = $this->connection->prepare($query);
             $statement->execute($parameters);
             $this->connection = null;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             die("there is an error occured while trying to insert");
         }
-
-        return header('Location: http://localhost:8888/');
     }
 }

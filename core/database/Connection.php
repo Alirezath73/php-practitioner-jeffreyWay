@@ -1,11 +1,13 @@
 <?php
 
+namespace App\Core\Database;
+
 class Connection
 {
     public static function make($config)
     {
         try {
-            $connection = new PDO(
+            $connection = new \PDO(
                 $config['connection'].';dbname='.$config['name'],
                 $config['username'],
                 $config['password'],
@@ -13,7 +15,7 @@ class Connection
             );
 
             return $connection;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
     }
